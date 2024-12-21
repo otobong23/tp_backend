@@ -9,9 +9,8 @@ import router from './routers';
 
 dotenv.config()
 const app = express()
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 4000
 const MONGO_URI: string = process.env.MONGO_URI || ''
-const BASE_URL = process.env.BASE_URL || ''
 
 app.use(cors({
   credentials: true,
