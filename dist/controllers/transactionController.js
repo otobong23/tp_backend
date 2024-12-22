@@ -28,7 +28,7 @@ const ethListen = async (req, res) => {
     try {
         const existingUser = await (0, usersModel_1.getUserByEmail)(email);
         if (!existingUser) {
-            res.status(401).json({ success: false, message: 'User does not exists!' });
+            res.status(404).json({ success: false, message: 'User does not exists!' });
             return;
         }
         const latestBlock = await web3.eth.getBlock("latest", true);
@@ -54,7 +54,7 @@ const ethListen = async (req, res) => {
             });
             await existingUser.save().then(() => {
                 newTransaction.save().then(() => {
-                    res.status(200).json({ success: true, message: 'Deposit has been made successfully', newTransaction });
+                    res.status(201).json({ success: true, message: 'Deposit has been made successfully', newTransaction });
                     return;
                 }).catch((err) => {
                     res.status(500).send({ success: false, message: `failed to save user's Transaction data, but user's data was saved, Error: ${err}` });
@@ -64,7 +64,6 @@ const ethListen = async (req, res) => {
                 res.status(500).send({ success: false, message: `failed to save user's wallet data, Error: ${err}` });
                 return;
             });
-            res.status(200).json({ success: true, transactions });
         }
         else {
             res.status(404).json({ success: false, message: "No transactions found for the Ethereum wallet." });
@@ -82,7 +81,7 @@ const btcListen = async (req, res) => {
     try {
         const existingUser = await (0, usersModel_1.getUserByEmail)(email);
         if (!existingUser) {
-            res.status(401).json({ success: false, message: 'User does not exists!' });
+            res.status(404).json({ success: false, message: 'User does not exists!' });
             return;
         }
         const btcToUsdtRate = await (0, getCryptoToUsdtRate_1.default)("bitcoin");
@@ -109,7 +108,7 @@ const btcListen = async (req, res) => {
             });
             await existingUser.save().then(() => {
                 newTransaction.save().then(() => {
-                    res.status(200).json({ success: true, message: 'Deposit has been made successfully', newTransaction });
+                    res.status(201).json({ success: true, message: 'Deposit has been made successfully', newTransaction });
                     return;
                 }).catch((err) => {
                     res.status(500).send({ success: false, message: `failed to save user's Transaction data, but user's data was saved, Error: ${err}` });
@@ -136,7 +135,7 @@ const usdtListen = async (req, res) => {
     try {
         const existingUser = await (0, usersModel_1.getUserByEmail)(email);
         if (!existingUser) {
-            res.status(401).json({ success: false, message: 'User does not exists!' });
+            res.status(404).json({ success: false, message: 'User does not exists!' });
             return;
         }
         const options = { method: 'GET', headers: { accept: 'application/json' } };
@@ -167,7 +166,7 @@ const usdtListen = async (req, res) => {
             });
         }
         else {
-            res.json({ success: false, message: "No transactions found for the TRC20 wallet." });
+            res.status(201).json({ success: false, message: "No transactions found for the TRC20 wallet." });
             return;
         }
     }
@@ -178,7 +177,7 @@ const usdtListen = async (req, res) => {
 };
 exports.usdtListen = usdtListen;
 const withdraw = async (req, res) => {
-    res.status(200).send({ success: true, message: 'withdrawals cannot be proccessed at this time' });
+    res.status(503).send({ success: true, message: 'withdrawals cannot be proccessed at this time' });
 };
 exports.withdraw = withdraw;
 const getTransactionHistory = async (req, res) => {
@@ -187,12 +186,12 @@ const getTransactionHistory = async (req, res) => {
     try {
         const existingUser = await (0, usersModel_1.getUserByEmail)(email);
         if (!existingUser) {
-            res.status(401).json({ success: false, message: 'User does not exists!' });
+            res.status(404).json({ success: false, message: 'User does not exists!' });
             return;
         }
         const transactions = await transactionModel_1.default.find({ userId: existingUser._id });
         if (!transactions) {
-            res.status(401).json({ success: false, message: 'No transactions found!' });
+            res.status(404).json({ success: false, message: 'No transactions found!' });
             return;
         }
         res.status(200).send({ success: true, transactions });

@@ -8,7 +8,7 @@ export const getWallet = async (req: Request, res: Response) => {
   try {
     const existingUser: any = await getUserByEmail(email);
     if (!existingUser) {
-      res.status(401).json({ success: false, message: 'User does not exists!' })
+      res.status(404).json({ success: false, message: 'User does not exists!' })
       return
     }
     res.status(200).send({ success: true, wallet: existingUser.wallet })
@@ -24,12 +24,12 @@ export const addToWatchlist = async (req: Request, res: Response) => {
   try {
     const { error, value } = watchlistSchema.validate({ watchlist })
     if (error) {
-      res.status(404).json({ success: false, message: "From Validator: "+error.details[0].message })
+      res.status(406).json({ success: false, message: "From Validator: "+error.details[0].message })
       return
     }
     const existingUser = await getUserByEmail(email);
     if (!existingUser) {
-      res.status(401).json({ success: false, message: 'User does not exists!' })
+      res.status(404).json({ success: false, message: 'User does not exists!' })
       return
     }
     const itemsToAdd = Array.isArray(watchlist) ? watchlist : [watchlist];
@@ -54,7 +54,7 @@ export const getUser = async (req:Request, res:Response) => {
   try {
     const existingUser = await getUserByEmail(email);
     if (!existingUser) {
-      res.status(401).json({ success: false, message: 'User does not exists!' })
+      res.status(404).json({ success: false, message: 'User does not exists!' })
       return
     }
     const { firstName, lastName, wallet, createdAt, updatedAt } = existingUser

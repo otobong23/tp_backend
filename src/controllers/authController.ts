@@ -170,7 +170,7 @@ export const verifyCode = async (req: Request, res: Response) => {
       return
     }
     if (!existingUser.verificationCode || !existingUser.verificationCodeValidation) {
-      res.status(400).json({ success: false, message: 'Something Went Wrong!' })
+      res.status(500).json({ success: false, message: 'Something Went Wrong!' })
       return
     }
     if (Date.now() - new Date(existingUser.verificationCodeValidation).getTime() > 5 * 60 * 1000) {
