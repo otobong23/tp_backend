@@ -4,7 +4,6 @@ import UserModel, { getUserByEmail } from "../models/usersModel"
 import doHash, { hmacProcess, validateHash } from "../helpers/hashing"
 import jwt from 'jsonwebtoken';
 import { sendCode } from "../middlewares/mailer"
-import TransactionModel from "../models/transactionModel";
 
 
 export const signup = async (req: Request, res: Response) => {
@@ -24,7 +23,7 @@ export const signup = async (req: Request, res: Response) => {
 
     const hashedPassword = doHash(password, 12)
 
-    const newUser: any = new UserModel({
+    const newUser = new UserModel({
       ...value,
       password: (await hashedPassword).toString()
     })
@@ -32,7 +31,7 @@ export const signup = async (req: Request, res: Response) => {
       const token = jwt.sign({
         userId: newUser.id,
         email: newUser.email,
-        verified: newUser.verfied
+        verified: newUser.verified
       },
         process.env.TOKEN_SECRET || '',
         {
@@ -44,7 +43,7 @@ export const signup = async (req: Request, res: Response) => {
         success: true,
         token,
         message: 'Logged In successfully',
-        user: { firstName, lastName, email }
+        user: { firstName, lastName, email, createdAt: newUser.createdAt }
       })
       return
     }).catch((e: Error) => {
@@ -65,7 +64,7 @@ export const signin = async (req: Request, res: Response) => {
       res.status(401).json({ success: false, message: error.details[0].message })
       return
     }
-    const existingUser: any = await getUserByEmail(email).select('+password')
+    const existingUser = await getUserByEmail(email).select('+password')
     if (!existingUser) {
       res.status(401).json({ success: false, message: 'User does not exists!' })
       return
@@ -78,7 +77,7 @@ export const signin = async (req: Request, res: Response) => {
     const token = jwt.sign({
       userId: existingUser.id,
       email: existingUser.email,
-      verified: existingUser.verfied
+      verified: existingUser.verified
     },
       process.env.TOKEN_SECRET || '',
       {

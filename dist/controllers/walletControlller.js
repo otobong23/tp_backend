@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addToWatchlist = exports.getWallet = void 0;
+exports.getUser = exports.addToWatchlist = exports.getWallet = void 0;
 const usersModel_1 = require("../models/usersModel");
 const validator_1 = require("../middlewares/validator");
 const getWallet = async (req, res) => {
@@ -50,3 +50,18 @@ const addToWatchlist = async (req, res) => {
     }
 };
 exports.addToWatchlist = addToWatchlist;
+const getUser = async (req, res) => {
+    const { email } = req.user;
+    try {
+        const existingUser = await (0, usersModel_1.getUserByEmail)(email);
+        if (!existingUser) {
+            res.status(401).json({ success: false, message: 'User does not exists!' });
+            return;
+        }
+        const { firstName, lastName, wallet, createdAt, updatedAt } = existingUser;
+        res.status(200).send({ success: true, user: { firstName, lastName, email, wallet, createdAt, updatedAt } });
+    }
+    catch (e) {
+    }
+};
+exports.getUser = getUser;

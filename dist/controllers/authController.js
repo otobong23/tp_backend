@@ -64,7 +64,7 @@ const signup = async (req, res) => {
             const token = jsonwebtoken_1.default.sign({
                 userId: newUser.id,
                 email: newUser.email,
-                verified: newUser.verfied
+                verified: newUser.verified
             }, process.env.TOKEN_SECRET || '', {
                 expiresIn: '3d'
             });
@@ -73,7 +73,7 @@ const signup = async (req, res) => {
                 success: true,
                 token,
                 message: 'Logged In successfully',
-                user: { firstName, lastName, email }
+                user: { firstName, lastName, email, createdAt: newUser.createdAt }
             });
             return;
         }).catch((e) => {
@@ -108,7 +108,7 @@ const signin = async (req, res) => {
         const token = jsonwebtoken_1.default.sign({
             userId: existingUser.id,
             email: existingUser.email,
-            verified: existingUser.verfied
+            verified: existingUser.verified
         }, process.env.TOKEN_SECRET || '', {
             expiresIn: '3d'
         });

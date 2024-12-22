@@ -1,17 +1,5 @@
-import mongoose, { Schema, Document } from 'mongoose'
-
-// Define the transaction interface for TypeScript
-export interface ITransaction extends Document {
-    userId: mongoose.Types.ObjectId;
-    amount: number;
-    blockchain: string;                 // Currency (e.g., USD, ETH)
-    type: 'credit' | 'debit';
-    status: 'pending' | 'completed' | 'failed';
-    description?: string;
-    metadata?: object;                // Optional additional data
-    createdAt: Date;                  // Transaction date
-    updatedAt: Date;                  // Timestamp for last update
-}
+import mongoose, { Schema } from 'mongoose'
+import { ITransaction } from 'types/models.types';
 
 // Define the transaction schema
 const TransactionSchema: Schema<ITransaction> = new Schema({

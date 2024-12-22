@@ -13,9 +13,8 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const routers_1 = __importDefault(require("./routers"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 4000;
 const MONGO_URI = process.env.MONGO_URI || '';
-const BASE_URL = process.env.BASE_URL || '';
 app.use((0, cors_1.default)({
     credentials: true,
     origin: '*'

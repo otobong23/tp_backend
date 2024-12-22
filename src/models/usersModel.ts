@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
+import { IUser } from "types/models.types";
 
-const UserSchema = new mongoose.Schema({
+
+const UserSchema = new mongoose.Schema<IUser>({
   firstName: { type: String, require: [true, 'first name is required!'] },
   lastName: { type: String, require: [true, 'last name is required!'] },
   email: { type: String, require: [true, 'email field is required!'], lowercase: true, unique: true },

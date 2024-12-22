@@ -6,4 +6,5 @@ const express_1 = require("express");
 const walletRouter = (0, express_1.Router)();
 walletRouter.get('/getWallet', identification_1.identifer, walletControlller_1.getWallet);
 walletRouter.post('/addToWatchlist', identification_1.identifer, walletControlller_1.addToWatchlist);
+walletRouter.get('/getUser', identification_1.identifer, walletControlller_1.getUser);
 exports.default = walletRouter;
