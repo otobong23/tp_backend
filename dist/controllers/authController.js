@@ -214,7 +214,7 @@ const verifyCode = async (req, res) => {
             existingUser.verificationCode = undefined;
             existingUser.verificationCodeValidation = undefined;
             await existingUser.save();
-            res.status(200).send({ success: true, message: 'Your account has been verified!' });
+            res.status(202).send({ success: true, message: 'Your account has been verified!' });
             return;
         }
         else if (hashedCodeValue !== existingUser.verificationCode) {
