@@ -7,7 +7,7 @@ export interface IUser extends Document {
   password: string
   verified: boolean
   verificationCode?: string
-  verificationCodeValidation?: string
+  verificationCodeValidation?: string | number | Date
   forgotPasswordCode?: string
   forgotPasswordCodeValidation?: string
   wallet: {

@@ -11,13 +11,13 @@ export const signup = async (req: Request, res: Response) => {
   try {
     const { error, value } = signupSchema.validate(req.body);
     if (error) {
-      res.status(401).json({ success: false, message: error.details[0].message })
+      res.status(406).json({ success: false, message: error.details[0].message })
       return
     }
 
     const existingUser = await getUserByEmail(email)
     if (existingUser) {
-      res.status(401).json({ success: false, message: 'User already exists!' })
+      res.status(404).json({ success: false, message: 'User already exists!' })
       return
     }
 
@@ -39,20 +39,22 @@ export const signup = async (req: Request, res: Response) => {
         }
       );
       const Days = (3 * (24 * 3600000));     // 3 Days
-      res.status(200).cookie('Authorization', 'Bearer ' + token, { expires: new Date(Date.now() + Days), httpOnly: process.env.NODE_ENV === 'production', secure: process.env.NODE_ENV === 'production' }).send({
+      res.status(201).cookie('Authorization', 'Bearer ' + token, { expires: new Date(Date.now() + Days), httpOnly: process.env.NODE_ENV === 'production', secure: process.env.NODE_ENV === 'production' }).send({
         success: true,
         token,
-        message: 'Logged In successfully',
+        message: 'Account Created successfully',
         user: { firstName, lastName, email, createdAt: newUser.createdAt }
       })
       return
     }).catch((e: Error) => {
       console.log(e)
-      res.status(401).send({ success: false, message: e.message })
+      res.status(500).send({ success: false, message: e.message })
       return
     })
-  } catch (e) {
+  } catch (e: any) {
     console.log(e)
+    res.status(500).send({ success: false, message: e.message })
+    return
   }
 }
 
@@ -61,17 +63,17 @@ export const signin = async (req: Request, res: Response) => {
     const { email, password } = req.body
     const { error, value } = signinSchema.validate(req.body)
     if (error) {
-      res.status(401).json({ success: false, message: error.details[0].message })
+      res.status(406).json({ success: false, message: error.details[0].message })
       return
     }
     const existingUser = await getUserByEmail(email).select('+password')
     if (!existingUser) {
-      res.status(401).json({ success: false, message: 'User does not exists!' })
+      res.status(404).json({ success: false, message: 'User does not exists!' })
       return
     }
     const result = validateHash(password, existingUser.password)
     if (!result) {
-      res.status(401).json({ success: false, message: 'Invalid Credentials!' })
+      res.status(406).json({ success: false, message: 'Invalid Credentials!' })
       return
     }
     const token = jwt.sign({
@@ -85,13 +87,16 @@ export const signin = async (req: Request, res: Response) => {
       }
     );
     const Days = (3 * (24 * 3600000));     // 3 Days
-    res.cookie('Authorization', 'Bearer ' + token, { expires: new Date(Date.now() + Days), httpOnly: process.env.NODE_ENV === 'production', secure: process.env.NODE_ENV === 'production' }).send({
+    res.status(202).cookie('Authorization', 'Bearer ' + token, { expires: new Date(Date.now() + Days), httpOnly: process.env.NODE_ENV === 'production', secure: process.env.NODE_ENV === 'production' }).send({
       success: true,
       token,
       message: 'Logged In successfully'
     })
-  } catch (e) {
+    return
+  } catch (e: any) {
     console.log(e)
+    res.status(500).send({ success: false, message: e.message })
+    return
   }
 }
 
@@ -102,14 +107,15 @@ export const signout = async (req: Request, res: Response) => {
 export const isVerified = async (req: Request, res: Response) => {
   const { email } = req.user
   try {
-    const existingUser: any = await getUserByEmail(email);
+    const existingUser = await getUserByEmail(email);
     if (!existingUser) {
-      res.status(401).json({ success: false, message: 'User does not exists!' })
+      res.status(404).json({ success: false, message: 'User does not exists!' })
       return
     }
     res.status(200).send({ success: true, verified: existingUser.verified })
   } catch (e: any) {
-    res.status(400).send({ success: false, message: e.message })
+    res.status(500).send({ success: false, message: e.message })
+    return
   }
 }
 
@@ -117,9 +123,9 @@ export const isVerified = async (req: Request, res: Response) => {
 export const sendVerificationCode = async (req: Request, res: Response) => {
   const { email } = req.user
   try {
-    const existingUser: any = await getUserByEmail(email);
+    const existingUser = await getUserByEmail(email);
     if (!existingUser) {
-      res.status(401).json({ success: false, message: 'User does not exists!' })
+      res.status(404).json({ success: false, message: 'User does not exists!' })
       return
     }
     if (existingUser.verified) {
@@ -133,12 +139,14 @@ export const sendVerificationCode = async (req: Request, res: Response) => {
       existingUser.verificationCode = hashedCodeValue
       existingUser.verificationCodeValidation = Date.now()
       await existingUser.save()
-      res.status(200).send({ success: true, message: 'Code Sent!' })
+      res.status(201).send({ success: true, message: 'Code Sent!' })
       return
     }
     res.status(400).send({ success: false, message: 'Code Sent Failed!' })
-  } catch (e) {
+  } catch (e: any) {
     console.log(e)
+    res.status(500).send({ success: false, message: e.message })
+    return
   }
 }
 
@@ -148,13 +156,13 @@ export const verifyCode = async (req: Request, res: Response) => {
   try {
     const { error, value } = acceptCodeSchema.validate({ providedCode })
     if (error) {
-      res.status(401).json({ success: false, message: error.details[0].message })
+      res.status(406).json({ success: false, message: error.details[0].message })
       return
     }
     const codeValue = providedCode.toString()
-    const existingUser: any = await getUserByEmail(email).select('+verificationCode +verificationCodeValidation');
+    const existingUser = await getUserByEmail(email).select('+verificationCode +verificationCodeValidation');
     if (!existingUser) {
-      res.status(401).json({ success: false, message: 'User does not exists!' })
+      res.status(404).json({ success: false, message: 'User does not exists!' })
       return
     }
     if (existingUser.verified) {
@@ -165,8 +173,8 @@ export const verifyCode = async (req: Request, res: Response) => {
       res.status(400).json({ success: false, message: 'Something Went Wrong!' })
       return
     }
-    if (Date.now() - existingUser.verificationCodeValidation > 5 * 60 * 1000) {
-      res.status(400).json({ success: false, message: 'Code Has Been Expired!' })
+    if (Date.now() - new Date(existingUser.verificationCodeValidation).getTime() > 5 * 60 * 1000) {
+      res.status(408).json({ success: false, message: 'Code Has Been Expired!' })
       return
     }
     const hashedCodeValue = hmacProcess(codeValue, process.env.HMAC_VERIFICATION_CODE_SECRET)
@@ -179,16 +187,17 @@ export const verifyCode = async (req: Request, res: Response) => {
       res.status(200).send({ success: true, message: 'Your account has been verified!' })
       return
     } else if (hashedCodeValue !== existingUser.verificationCode) {
-      res.status(400).json({ success: false, message: 'Code is Invalid!' })
+      res.status(406).json({ success: false, message: 'Code is Invalid!' })
       return
     }
-    res.status(400).json({ success: false, message: 'Unexpected occurred!' })
+    res.status(500).json({ success: false, message: 'Unexpected occurred!' })
     return
-  } catch (e) {
+  } catch (e: any) {
     console.log(e)
+    res.status(500).send({ success: false, message: e.message })
+    return
   }
 }
 
 export const changePassword = async (req: Request, res: Response) => {
-
 }
