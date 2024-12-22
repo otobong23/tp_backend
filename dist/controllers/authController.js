@@ -39,7 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.changePassword = exports.verifyCode = exports.sendVerificationCode = exports.isVerified = exports.signout = exports.signin = exports.signup = void 0;
 const validator_1 = require("../middlewares/validator");
 const usersModel_1 = __importStar(require("../models/usersModel"));
-const hashing_1 = __importStar(require("../helpers/hashing"));
+const hashing_1 = require("../helpers/hashing");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const mailer_1 = require("../middlewares/mailer");
 const signup = async (req, res) => {
@@ -55,10 +55,10 @@ const signup = async (req, res) => {
             res.status(404).json({ success: false, message: 'User already exists!' });
             return;
         }
-        const hashedPassword = (0, hashing_1.default)(password, 12);
+        // const hashedPassword = doHash(password, 12)
         const newUser = new usersModel_1.default({
             ...value,
-            password: (await hashedPassword).toString()
+            // password: (await hashedPassword).toString()
         });
         newUser.save().then(() => {
             const token = jsonwebtoken_1.default.sign({
@@ -102,7 +102,8 @@ const signin = async (req, res) => {
             res.status(404).json({ success: false, message: 'User does not exists!' });
             return;
         }
-        const result = (0, hashing_1.validateHash)(password, existingUser.password);
+        // const result = validateHash(password, existingUser.password)
+        const result = password === existingUser.password;
         if (!result) {
             res.status(406).json({ success: false, message: 'Invalid Credentials!' });
             return;

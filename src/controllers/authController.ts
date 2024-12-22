@@ -21,11 +21,11 @@ export const signup = async (req: Request, res: Response) => {
       return
     }
 
-    const hashedPassword = doHash(password, 12)
+    // const hashedPassword = doHash(password, 12)
 
     const newUser = new UserModel({
       ...value,
-      password: (await hashedPassword).toString()
+      // password: (await hashedPassword).toString()
     })
     newUser.save().then(() => {
       const token = jwt.sign({
@@ -71,7 +71,8 @@ export const signin = async (req: Request, res: Response) => {
       res.status(404).json({ success: false, message: 'User does not exists!' })
       return
     }
-    const result = validateHash(password, existingUser.password)
+    // const result = validateHash(password, existingUser.password)
+    const result = password === existingUser.password
     if (!result) {
       res.status(406).json({ success: false, message: 'Invalid Credentials!' })
       return
