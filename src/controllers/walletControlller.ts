@@ -59,7 +59,10 @@ export const getUser = async (req:Request, res:Response) => {
     }
     const { firstName, lastName, wallet, createdAt, updatedAt } = existingUser
     res.status(200).send({ success: true, user: { firstName, lastName, email, wallet, createdAt, updatedAt } })
-  } catch (e) {
-    
+    return
+  } catch (e:any) {
+    console.log(e)
+    res.status(500).send(e.message)
+    return
   }
 }

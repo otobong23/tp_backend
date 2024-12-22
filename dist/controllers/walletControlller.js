@@ -60,8 +60,12 @@ const getUser = async (req, res) => {
         }
         const { firstName, lastName, wallet, createdAt, updatedAt } = existingUser;
         res.status(200).send({ success: true, user: { firstName, lastName, email, wallet, createdAt, updatedAt } });
+        return;
     }
     catch (e) {
+        console.log(e);
+        res.status(500).send(e.message);
+        return;
     }
 };
 exports.getUser = getUser;
