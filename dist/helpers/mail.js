@@ -58,6 +58,7 @@ const EmailTemplate = ({ firstName, code }) => {
                 react_1.default.createElement("a", { href: "/" }, "Welcome to TradePhere")),
             react_1.default.createElement("p", { style: styles.p }, "Trade Phere is a trading company where you can be a part of the peer-to-peer exchange community worldwide. Using modern business methods and person-to-person client approach, we offer a unique investment model to traders of bitcoin and other methods."),
             react_1.default.createElement("p", { style: styles.p }, "Verify your email"),
-            react_1.default.createElement("h1", { style: styles.h1 }, code))));
+            react_1.default.createElement("h1", { style: styles.h1 }, code),
+            react_1.default.createElement("p", { style: styles.p }, "This Code Expires in 10 Minutes"))));
 };
 exports.default = EmailTemplate;

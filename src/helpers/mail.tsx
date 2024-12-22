@@ -63,6 +63,7 @@ const EmailTemplate: React.FC<EmailTemplateProps> = ({ firstName, code }) => {
         </p>
         <p style={styles.p}>Verify your email</p>
         <h1 style={styles.h1}>{code}</h1>
+        <p style={styles.p}>This Code Expires in 10 Minutes</p>
       </div>
     </div>
   );

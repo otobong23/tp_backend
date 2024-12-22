@@ -173,7 +173,7 @@ export const verifyCode = async (req: Request, res: Response) => {
       res.status(500).json({ success: false, message: 'Something Went Wrong!' })
       return
     }
-    if (Date.now() - new Date(existingUser.verificationCodeValidation).getTime() > 5 * 60 * 1000) {
+    if (Date.now() - new Date(existingUser.verificationCodeValidation).getTime() > 10 * 60 * 1000) {
       res.status(408).json({ success: false, message: 'Code Has Been Expired!' })
       return
     }
