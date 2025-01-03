@@ -8,10 +8,10 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const identifer = (req, res, next) => {
     let token;
     if (req.headers.client === 'not-browser') {
-        token = req.headers.authorization;
+        token = req.cookies['Authorization'];
     }
     else {
-        token = req.cookies['Authorization'];
+        token = req.headers.authorization;
     }
     if (!token) {
         res.status(403).send({ success: false, message: 'unauthorized' });

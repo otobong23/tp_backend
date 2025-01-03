@@ -18,14 +18,17 @@ app.use(cors({
 }))
 app.use(cookieParser())
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use('/api', router)
 
 
 
 const server = http.createServer(app)
 mongoose.Promise = Promise
-mongoose.connect(MONGO_URI).then(() => {
+mongoose.connect(MONGO_URI, {
+  connectTimeoutMS: 30000,
+  socketTimeoutMS: 45000,
+}).then(() => {
   console.log('Database is connected')
   server.listen(PORT, () => {
     console.log(`server listening from http://localhost:${PORT}/`)

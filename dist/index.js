@@ -25,7 +25,10 @@ app.use(body_parser_1.default.urlencoded({ extended: true }));
 app.use('/api', routers_1.default);
 const server = http_1.default.createServer(app);
 mongoose_1.default.Promise = Promise;
-mongoose_1.default.connect(MONGO_URI).then(() => {
+mongoose_1.default.connect(MONGO_URI, {
+    connectTimeoutMS: 30000,
+    socketTimeoutMS: 45000,
+}).then(() => {
     console.log('Database is connected');
     server.listen(PORT, () => {
         console.log(`server listening from http://localhost:${PORT}/`);
