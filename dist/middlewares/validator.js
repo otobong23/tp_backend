@@ -30,5 +30,5 @@ exports.watchlistSchema = joi_1.default.object({
     watchlist: joi_1.default.alternatives().try(joi_1.default.array().items(joi_1.default.string()).required(), joi_1.default.string().required())
 });
 exports.cryptoLabelSchema = joi_1.default.object({
-    cryptoLabel: joi_1.default.alternatives().try(joi_1.default.string().valid('ethereum'), joi_1.default.string().valid('bitcoin'), joi_1.default.string().valid('usdt'))
+    cryptoLabel: joi_1.default.alternatives().try(joi_1.default.string().valid('ethereum'), joi_1.default.string().valid('bitcoin'), joi_1.default.string().valid('usd'))
 });

@@ -7,7 +7,7 @@ const axios_1 = __importDefault(require("axios"));
 // Function to get the current price of a cryptocurrency in USDT
 const getCryptoToUsdtRate = async (crypto) => {
     try {
-        const response = await axios_1.default.get(`https://api.coingecko.com/api/v3/simple/price?ids=${crypto}&vs_currencies=usdt`);
+        const response = await axios_1.default.get(`https://api.coingecko.com/api/v3/simple/price?ids=${crypto}&vs_currencies=usd`);
         // Extract and return the USDT value
         return response.data[crypto]?.usdt || 0;
     }

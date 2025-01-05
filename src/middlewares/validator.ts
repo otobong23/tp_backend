@@ -36,6 +36,6 @@ export const cryptoLabelSchema = Joi.object({
   cryptoLabel: Joi.alternatives().try(
     Joi.string().valid('ethereum'),
     Joi.string().valid('bitcoin'),
-    Joi.string().valid('usdt')
+    Joi.string().valid('usd')
   )
 });

@@ -6,7 +6,7 @@ import axios from "axios";
 const getCryptoToUsdtRate = async (crypto: string): Promise<number> => {
   try {
     const response = await axios.get(
-      `https://api.coingecko.com/api/v3/simple/price?ids=${crypto}&vs_currencies=usdt`
+      `https://api.coingecko.com/api/v3/simple/price?ids=${crypto}&vs_currencies=usd`
     );
 
     // Extract and return the USDT value
