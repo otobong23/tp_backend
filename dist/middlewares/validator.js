@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.watchlistSchema = exports.changePasswordSchema = exports.acceptCodeSchema = exports.signinSchema = exports.signupSchema = void 0;
+exports.cryptoLabelSchema = exports.watchlistSchema = exports.changePasswordSchema = exports.acceptCodeSchema = exports.signinSchema = exports.signupSchema = void 0;
 const joi_1 = __importDefault(require("joi"));
 exports.signupSchema = joi_1.default.object({
     firstName: joi_1.default.string().min(2).max(20).required(),
@@ -28,4 +28,7 @@ exports.changePasswordSchema = joi_1.default.object({
 });
 exports.watchlistSchema = joi_1.default.object({
     watchlist: joi_1.default.alternatives().try(joi_1.default.array().items(joi_1.default.string()).required(), joi_1.default.string().required())
+});
+exports.cryptoLabelSchema = joi_1.default.object({
+    cryptoLabel: joi_1.default.alternatives().try(joi_1.default.string().valid('ethereum'), joi_1.default.string().valid('bitcoin'), joi_1.default.string().valid('usdt'))
 });

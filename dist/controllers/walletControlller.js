@@ -1,8 +1,12 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUser = exports.addToWatchlist = exports.getWallet = void 0;
+exports.getUsdtRate = exports.getUser = exports.addToWatchlist = exports.getWallet = void 0;
 const usersModel_1 = require("../models/usersModel");
 const validator_1 = require("../middlewares/validator");
+const getCryptoToUsdtRate_1 = __importDefault(require("helpers/getCryptoToUsdtRate"));
 const getWallet = async (req, res) => {
     const { email } = req.user;
     try {
@@ -69,3 +73,21 @@ const getUser = async (req, res) => {
     }
 };
 exports.getUser = getUser;
+const getUsdtRate = async (req, res) => {
+    const { cryptoLabel } = req.body;
+    try {
+        const { error, value } = validator_1.cryptoLabelSchema.validate({ cryptoLabel });
+        if (error) {
+            res.status(406).json({ success: false, message: "From Validator: " + error.details[0].message });
+            return;
+        }
+        const cryptoToUsdtRate = await (0, getCryptoToUsdtRate_1.default)(cryptoLabel);
+        res.status(200).send({ success: true, value: cryptoToUsdtRate });
+    }
+    catch (e) {
+        console.log(e);
+        res.status(500).send(e.message);
+        return;
+    }
+};
+exports.getUsdtRate = getUsdtRate;
