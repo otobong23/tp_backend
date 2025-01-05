@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { getUserByEmail } from "../models/usersModel";
-import { watchlistSchema } from "../middlewares/validator";
+import { cryptoLabelSchema, watchlistSchema } from "../middlewares/validator";
+import getCryptoToUsdtRate from "helpers/getCryptoToUsdtRate";
 
 
 export const getWallet = async (req: Request, res: Response) => {
@@ -60,6 +61,23 @@ export const getUser = async (req:Request, res:Response) => {
     const { firstName, lastName, wallet, createdAt, updatedAt } = existingUser
     res.status(200).send({ success: true, user: { firstName, lastName, email, wallet, createdAt, updatedAt } })
     return
+  } catch (e:any) {
+    console.log(e)
+    res.status(500).send(e.message)
+    return
+  }
+}
+
+export const getUsdtRate = async (req:Request, res:Response) => {
+  const { cryptoLabel } = req.body
+  try {
+    const { error, value } = cryptoLabelSchema.validate({ cryptoLabel })
+    if (error) {
+      res.status(406).json({ success: false, message: "From Validator: "+error.details[0].message })
+      return
+    }
+    const cryptoToUsdtRate = await getCryptoToUsdtRate(cryptoLabel);
+    res.status(200).send({success: true, value: cryptoToUsdtRate})
   } catch (e:any) {
     console.log(e)
     res.status(500).send(e.message)
