@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUsdtRate = exports.getUser = exports.addToWatchlist = exports.getWallet = void 0;
 const usersModel_1 = require("../models/usersModel");
 const validator_1 = require("../middlewares/validator");
-const getCryptoToUsdtRate_1 = __importDefault(require("helpers/getCryptoToUsdtRate"));
+const getCryptoToUsdtRate_1 = __importDefault(require("../helpers/getCryptoToUsdtRate"));
 const getWallet = async (req, res) => {
     const { email } = req.user;
     try {

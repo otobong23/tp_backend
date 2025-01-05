@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { getUserByEmail } from "../models/usersModel";
 import { cryptoLabelSchema, watchlistSchema } from "../middlewares/validator";
-import getCryptoToUsdtRate from "helpers/getCryptoToUsdtRate";
+import getCryptoToUsdtRate from "../helpers/getCryptoToUsdtRate";
 
 
 export const getWallet = async (req: Request, res: Response) => {
