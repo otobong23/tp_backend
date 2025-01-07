@@ -3,7 +3,7 @@
 import axios from "axios";
 
 // Function to get the current price of a cryptocurrency in USDT
-const getCryptoToUsdtRate = async (crypto: string): Promise<any> => {
+const getCryptoToUsdtRate = async (crypto: string): Promise<number> => {
   try {
     const response = await axios.get(
       `https://api.coingecko.com/api/v3/simple/price?ids=${crypto}&vs_currencies=usd`
