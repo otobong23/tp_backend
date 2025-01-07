@@ -9,7 +9,7 @@ const getCryptoToUsdtRate = async (crypto) => {
     try {
         const response = await axios_1.default.get(`https://api.coingecko.com/api/v3/simple/price?ids=${crypto}&vs_currencies=usd`);
         // Extract and return the USDT value
-        return response.data[crypto]?.usdt || 0;
+        return response.data[crypto]?.usd || 0;
     }
     catch (error) {
         console.error(`Failed to fetch ${crypto} to USDT rate:`, error);
