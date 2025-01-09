@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "a backend server for trade_phere",
   "main": "index.js",
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
     "start": "node dist/index",
     "dev": "tsc --build"
