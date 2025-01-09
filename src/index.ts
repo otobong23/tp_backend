@@ -1,4 +1,4 @@
-import express, {Request, Response} from 'express';
+import express from 'express';
 import dotenv from 'dotenv'
 import bodyParser from 'body-parser'
 import cors from 'cors';
@@ -12,18 +12,16 @@ const app = express()
 const PORT = process.env.PORT || 4000
 const MONGO_URI: string = process.env.MONGO_URI || ''
 
-// app.use(cors({
-//   origin: ['http://localhost:3000/', 'https://tradephere.onrender.com/', '*']
-// }))
-app.use(cors())
+app.use(cors({
+  credentials: true,
+  origin: ['http://localhost:3000/', 'https://tradephere.onrender.com/',]
+}))
 app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use('/api', router)
 
-app.get('/api/home', (req:Request, res:Response) => {
-  res.status(200).send('hello world')
-})
+
 
 const server = http.createServer(app)
 mongoose.Promise = Promise
