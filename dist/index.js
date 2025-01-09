@@ -17,7 +17,9 @@ const PORT = process.env.PORT || 4000;
 const MONGO_URI = process.env.MONGO_URI || '';
 app.use((0, cors_1.default)({
     credentials: true,
-    origin: '*'
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    origin: ['http://localhost:3000', 'https://tradephere.onrender.com/']
 }));
 app.use((0, cookie_parser_1.default)());
 app.use(body_parser_1.default.json());

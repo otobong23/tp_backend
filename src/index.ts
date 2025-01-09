@@ -14,7 +14,9 @@ const MONGO_URI: string = process.env.MONGO_URI || ''
 
 app.use(cors({
   credentials: true,
-  origin: '*'
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  origin: ['http://localhost:3000', 'https://tradephere.onrender.com/']
 }))
 app.use(cookieParser())
 app.use(bodyParser.json())
