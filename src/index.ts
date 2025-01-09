@@ -16,7 +16,7 @@ app.use(cors({
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  origin: ['http://localhost:3000', 'https://tradephere.onrender.com/']
+  origin: ['http://localhost:3000/', 'https://tradephere.onrender.com/', '*']
 }))
 app.use(cookieParser())
 app.use(bodyParser.json())
