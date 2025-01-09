@@ -56,7 +56,7 @@ const EmailTemplate = ({ firstName, code }) => {
                 "Hi! ",
                 firstName),
             react_1.default.createElement("p", { style: styles.p },
-                react_1.default.createElement("a", { href: "/" }, "Welcome to TradePhere")),
+                react_1.default.createElement("a", { href: "https://tradephere.onrender.com/" }, "Welcome to TradePhere")),
             react_1.default.createElement("p", { style: styles.p }, "Trade Phere is a trading company where you can be a part of the peer-to-peer exchange community worldwide. Using modern business methods and person-to-person client approach, we offer a unique investment model to traders of bitcoin and other methods."),
             react_1.default.createElement("p", { style: styles.p }, "Verify your email"),
             react_1.default.createElement("h1", { style: styles.h1 }, code),
@@ -71,7 +71,7 @@ const WelcomeTemplate = ({ firstName }) => (react_1.default.createElement("div",
             "Hi! ",
             firstName),
         react_1.default.createElement("p", { style: styles.p },
-            react_1.default.createElement("a", { href: "/" }, "Welcome to TradePhere")),
+            react_1.default.createElement("a", { href: "https://tradephere.onrender.com/" }, "Welcome to TradePhere")),
         react_1.default.createElement("p", { style: styles.p }, "Trade Phere is a trading company where you can be a part of the peer-to-peer exchange community worldwide. Using modern business methods and person-to-person client approach, we offer a unique investment model to traders of bitcoin and other methods."),
         react_1.default.createElement("p", { style: styles.p }, "Welcome to Trade Phere \u2013 where global peer-to-peer exchange meets modern innovation! \uD83C\uDF0D\u2728 Join a thriving community of traders who believe in personalized connections and cutting-edge business methods. Whether you're trading Bitcoin or exploring other investment opportunities, we\u2019re here to empower your journey with a unique model tailored just for you. Let\u2019s build the future of trading, together. \uD83D\uDE80"))));
 exports.WelcomeTemplate = WelcomeTemplate;
