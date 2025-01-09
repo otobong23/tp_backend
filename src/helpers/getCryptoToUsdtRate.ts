@@ -12,7 +12,7 @@ const getCryptoToUsdtRate = async (crypto: string): Promise<number> => {
     // Extract and return the USDT value
     return response.data[crypto]?.usd || 0;
   } catch (error) {
-    console.error(`Failed to fetch ${crypto} to USDT rate:`, error);
+    console.error(`Failed to fetch ${crypto} to USDT rate :`, error);
     return 0;
   }
 };
