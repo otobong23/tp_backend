@@ -4,7 +4,7 @@
   "description": "a backend server for trade_phere",
   "main": "index.js",
   "scripts": {
-    "start": "node --watch dist/index",
+    "start": "node dist/index",
     "dev": "tsc --build"
   },
   "author": "Miracle Boniface",
