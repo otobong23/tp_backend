@@ -1,4 +1,4 @@
-import express from 'express';
+import express, {Request, Response} from 'express';
 import dotenv from 'dotenv'
 import bodyParser from 'body-parser'
 import cors from 'cors';
@@ -21,7 +21,9 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use('/api', router)
 
-
+app.get('/api/home', (req:Request, res:Response) => {
+  res.status(200).send('hello world')
+})
 
 const server = http.createServer(app)
 mongoose.Promise = Promise
