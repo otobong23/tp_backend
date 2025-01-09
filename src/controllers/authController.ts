@@ -3,7 +3,7 @@ import { acceptCodeSchema, signinSchema, signupSchema } from "../middlewares/val
 import UserModel, { getUserByEmail } from "../models/usersModel"
 import doHash, { hmacProcess, validateHash } from "../helpers/hashing"
 import jwt from 'jsonwebtoken';
-import { sendCode } from "../middlewares/mailer"
+import { sendCode, welcomeMessage } from "../middlewares/mailer"
 
 
 export const signup = async (req: Request, res: Response) => {
@@ -27,6 +27,8 @@ export const signup = async (req: Request, res: Response) => {
       ...value,
       // password: (await hashedPassword).toString()
     })
+    const info = await welcomeMessage(email, firstName);
+    if (info === true) console.log('email sent');
     newUser.save().then(() => {
       const token = jwt.sign({
         userId: newUser.id,

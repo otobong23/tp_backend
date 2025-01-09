@@ -60,6 +60,9 @@ const signup = async (req, res) => {
             ...value,
             // password: (await hashedPassword).toString()
         });
+        const info = await (0, mailer_1.welcomeMessage)(email, firstName);
+        if (info === true)
+            console.log('email sent');
         newUser.save().then(() => {
             const token = jsonwebtoken_1.default.sign({
                 userId: newUser.id,
