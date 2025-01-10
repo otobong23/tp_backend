@@ -24,9 +24,9 @@ const tronWeb = new tronweb_1.TronWeb({
 });
 // Endpoint for listening to Ethereum transactions
 const ethListen = async (req, res) => {
-    const { email } = req.user;
+    const { username } = req.user;
     try {
-        const existingUser = await (0, usersModel_1.getUserByEmail)(email);
+        const existingUser = await (0, usersModel_1.getUserByUsername)(username);
         if (!existingUser) {
             res.status(404).json({ success: false, message: 'User does not exists!' });
             return;
@@ -77,9 +77,9 @@ const ethListen = async (req, res) => {
 exports.ethListen = ethListen;
 // Endpoint for listening to Bitcoin transactions
 const btcListen = async (req, res) => {
-    const { email } = req.user;
+    const { username } = req.user;
     try {
-        const existingUser = await (0, usersModel_1.getUserByEmail)(email);
+        const existingUser = await (0, usersModel_1.getUserByUsername)(username);
         if (!existingUser) {
             res.status(404).json({ success: false, message: 'User does not exists!' });
             return;
@@ -131,9 +131,9 @@ const btcListen = async (req, res) => {
 exports.btcListen = btcListen;
 // Endpoint for listening to TRC20 transactions
 const usdtListen = async (req, res) => {
-    const { email } = req.user;
+    const { username } = req.user;
     try {
-        const existingUser = await (0, usersModel_1.getUserByEmail)(email);
+        const existingUser = await (0, usersModel_1.getUserByUsername)(username);
         if (!existingUser) {
             res.status(404).json({ success: false, message: 'User does not exists!' });
             return;
@@ -181,10 +181,10 @@ const withdraw = async (req, res) => {
 };
 exports.withdraw = withdraw;
 const getTransactionHistory = async (req, res) => {
-    const { email } = req.user;
+    const { username } = req.user;
     const { params, query } = req;
     try {
-        const existingUser = await (0, usersModel_1.getUserByEmail)(email);
+        const existingUser = await (0, usersModel_1.getUserByUsername)(username);
         if (!existingUser) {
             res.status(404).json({ success: false, message: 'User does not exists!' });
             return;

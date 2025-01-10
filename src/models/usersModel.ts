@@ -5,7 +5,7 @@ import { IUser } from "types/models.types";
 const UserSchema = new mongoose.Schema<IUser>({
   firstName: { type: String, require: [true, 'first name is required!'] },
   lastName: { type: String, require: [true, 'last name is required!'] },
-  email: { type: String, require: [true, 'email field is required!'], lowercase: true, unique: true },
+  username: { type: String, require: [true, 'username field is required!'], lowercase: true, unique: true },
   password: { type: String, require: [true, 'password is required!'], select: false, trim: true },
   verified: { type: Boolean, default: false },
   verificationCode: { type: String, select: false },
@@ -25,5 +25,5 @@ const UserModel = mongoose.model('user', UserSchema)
 export default UserModel
 
 export const getUsers = () => UserModel.find()
-export const getUserByEmail = (email: string) => UserModel.findOne({ email })
+export const getUserByUsername = (username: string) => UserModel.findOne({ username })
 export const getUserById = ( id: string ) => UserModel.findById(id)

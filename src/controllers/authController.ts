@@ -1,13 +1,13 @@
 import { Request, Response } from "express"
 import { acceptCodeSchema, signinSchema, signupSchema } from "../middlewares/validator"
-import UserModel, { getUserByEmail } from "../models/usersModel"
+import UserModel, { getUserByUsername } from "../models/usersModel"
 import doHash, { hmacProcess, validateHash } from "../helpers/hashing"
 import jwt from 'jsonwebtoken';
 import { sendCode, welcomeMessage } from "../middlewares/mailer"
 
 
 export const signup = async (req: Request, res: Response) => {
-  const { email, password, firstName, lastName } = req.body
+  const { username, password, firstName, lastName } = req.body
   try {
     const { error, value } = signupSchema.validate(req.body);
     if (error) {
@@ -15,7 +15,7 @@ export const signup = async (req: Request, res: Response) => {
       return
     }
 
-    const existingUser = await getUserByEmail(email)
+    const existingUser = await getUserByUsername(username)
     if (existingUser) {
       res.status(404).json({ success: false, message: 'User already exists!' })
       return
@@ -27,12 +27,12 @@ export const signup = async (req: Request, res: Response) => {
       ...value,
       // password: (await hashedPassword).toString()
     })
-    const info = await welcomeMessage(email, firstName);
-    if (info === true) console.log('email sent');
+    // const info = await welcomeMessage(username, firstName);
+    // if (info === true) console.log('username sent');
     newUser.save().then(() => {
       const token = jwt.sign({
         userId: newUser.id,
-        email: newUser.email,
+        username: newUser.username,
         verified: newUser.verified
       },
         process.env.TOKEN_SECRET || '',
@@ -45,7 +45,7 @@ export const signup = async (req: Request, res: Response) => {
         success: true,
         token,
         message: 'Account Created successfully',
-        user: { firstName, lastName, email, createdAt: newUser.createdAt }
+        user: { firstName, lastName, username, createdAt: newUser.createdAt }
       })
       return
     }).catch((e: Error) => {
@@ -62,13 +62,13 @@ export const signup = async (req: Request, res: Response) => {
 
 export const signin = async (req: Request, res: Response) => {
   try {
-    const { email, password } = req.body
+    const { username, password } = req.body
     const { error, value } = signinSchema.validate(req.body)
     if (error) {
       res.status(406).json({ success: false, message: error.details[0].message })
       return
     }
-    const existingUser = await getUserByEmail(email).select('+password')
+    const existingUser = await getUserByUsername(username).select('+password')
     if (!existingUser) {
       res.status(404).json({ success: false, message: 'User does not exists!' })
       return
@@ -81,7 +81,7 @@ export const signin = async (req: Request, res: Response) => {
     }
     const token = jwt.sign({
       userId: existingUser.id,
-      email: existingUser.email,
+      username: existingUser.username,
       verified: existingUser.verified
     },
       process.env.TOKEN_SECRET || '',
@@ -108,9 +108,9 @@ export const signout = async (req: Request, res: Response) => {
 }
 
 export const isVerified = async (req: Request, res: Response) => {
-  const { email } = req.user
+  const { username } = req.user
   try {
-    const existingUser = await getUserByEmail(email);
+    const existingUser = await getUserByUsername(username);
     if (!existingUser) {
       res.status(404).json({ success: false, message: 'User does not exists!' })
       return
@@ -124,9 +124,9 @@ export const isVerified = async (req: Request, res: Response) => {
 
 
 export const sendVerificationCode = async (req: Request, res: Response) => {
-  const { email } = req.user
+  const { username } = req.user
   try {
-    const existingUser = await getUserByEmail(email);
+    const existingUser = await getUserByUsername(username);
     if (!existingUser) {
       res.status(404).json({ success: false, message: 'User does not exists!' })
       return
@@ -136,7 +136,7 @@ export const sendVerificationCode = async (req: Request, res: Response) => {
       return
     }
     const codeValue = Math.floor(Math.random() * 1000000).toString();
-    const info = await sendCode(email, codeValue, existingUser.firstName)
+    const info = await sendCode(username, codeValue, existingUser.firstName)
     if (info === true) {
       const hashedCodeValue = hmacProcess(codeValue, process.env.HMAC_VERIFICATION_CODE_SECRET);
       existingUser.verificationCode = hashedCodeValue
@@ -155,7 +155,7 @@ export const sendVerificationCode = async (req: Request, res: Response) => {
 
 export const verifyCode = async (req: Request, res: Response) => {
   const { providedCode } = req.body
-  const { email } = req.user
+  const { username } = req.user
   try {
     const { error, value } = acceptCodeSchema.validate({ providedCode })
     if (error) {
@@ -163,7 +163,7 @@ export const verifyCode = async (req: Request, res: Response) => {
       return
     }
     const codeValue = providedCode.toString()
-    const existingUser = await getUserByEmail(email).select('+verificationCode +verificationCodeValidation');
+    const existingUser = await getUserByUsername(username).select('+verificationCode +verificationCodeValidation');
     if (!existingUser) {
       res.status(404).json({ success: false, message: 'User does not exists!' })
       return

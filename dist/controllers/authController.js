@@ -43,14 +43,14 @@ const hashing_1 = require("../helpers/hashing");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const mailer_1 = require("../middlewares/mailer");
 const signup = async (req, res) => {
-    const { email, password, firstName, lastName } = req.body;
+    const { username, password, firstName, lastName } = req.body;
     try {
         const { error, value } = validator_1.signupSchema.validate(req.body);
         if (error) {
             res.status(406).json({ success: false, message: error.details[0].message });
             return;
         }
-        const existingUser = await (0, usersModel_1.getUserByEmail)(email);
+        const existingUser = await (0, usersModel_1.getUserByUsername)(username);
         if (existingUser) {
             res.status(404).json({ success: false, message: 'User already exists!' });
             return;
@@ -60,13 +60,12 @@ const signup = async (req, res) => {
             ...value,
             // password: (await hashedPassword).toString()
         });
-        const info = await (0, mailer_1.welcomeMessage)(email, firstName);
-        if (info === true)
-            console.log('email sent');
+        // const info = await welcomeMessage(username, firstName);
+        // if (info === true) console.log('username sent');
         newUser.save().then(() => {
             const token = jsonwebtoken_1.default.sign({
                 userId: newUser.id,
-                email: newUser.email,
+                username: newUser.username,
                 verified: newUser.verified
             }, process.env.TOKEN_SECRET || '', {
                 expiresIn: '3d'
@@ -76,7 +75,7 @@ const signup = async (req, res) => {
                 success: true,
                 token,
                 message: 'Account Created successfully',
-                user: { firstName, lastName, email, createdAt: newUser.createdAt }
+                user: { firstName, lastName, username, createdAt: newUser.createdAt }
             });
             return;
         }).catch((e) => {
@@ -94,13 +93,13 @@ const signup = async (req, res) => {
 exports.signup = signup;
 const signin = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { username, password } = req.body;
         const { error, value } = validator_1.signinSchema.validate(req.body);
         if (error) {
             res.status(406).json({ success: false, message: error.details[0].message });
             return;
         }
-        const existingUser = await (0, usersModel_1.getUserByEmail)(email).select('+password');
+        const existingUser = await (0, usersModel_1.getUserByUsername)(username).select('+password');
         if (!existingUser) {
             res.status(404).json({ success: false, message: 'User does not exists!' });
             return;
@@ -113,7 +112,7 @@ const signin = async (req, res) => {
         }
         const token = jsonwebtoken_1.default.sign({
             userId: existingUser.id,
-            email: existingUser.email,
+            username: existingUser.username,
             verified: existingUser.verified
         }, process.env.TOKEN_SECRET || '', {
             expiresIn: '3d'
@@ -138,9 +137,9 @@ const signout = async (req, res) => {
 };
 exports.signout = signout;
 const isVerified = async (req, res) => {
-    const { email } = req.user;
+    const { username } = req.user;
     try {
-        const existingUser = await (0, usersModel_1.getUserByEmail)(email);
+        const existingUser = await (0, usersModel_1.getUserByUsername)(username);
         if (!existingUser) {
             res.status(404).json({ success: false, message: 'User does not exists!' });
             return;
@@ -154,9 +153,9 @@ const isVerified = async (req, res) => {
 };
 exports.isVerified = isVerified;
 const sendVerificationCode = async (req, res) => {
-    const { email } = req.user;
+    const { username } = req.user;
     try {
-        const existingUser = await (0, usersModel_1.getUserByEmail)(email);
+        const existingUser = await (0, usersModel_1.getUserByUsername)(username);
         if (!existingUser) {
             res.status(404).json({ success: false, message: 'User does not exists!' });
             return;
@@ -166,7 +165,7 @@ const sendVerificationCode = async (req, res) => {
             return;
         }
         const codeValue = Math.floor(Math.random() * 1000000).toString();
-        const info = await (0, mailer_1.sendCode)(email, codeValue, existingUser.firstName);
+        const info = await (0, mailer_1.sendCode)(username, codeValue, existingUser.firstName);
         if (info === true) {
             const hashedCodeValue = (0, hashing_1.hmacProcess)(codeValue, process.env.HMAC_VERIFICATION_CODE_SECRET);
             existingUser.verificationCode = hashedCodeValue;
@@ -186,7 +185,7 @@ const sendVerificationCode = async (req, res) => {
 exports.sendVerificationCode = sendVerificationCode;
 const verifyCode = async (req, res) => {
     const { providedCode } = req.body;
-    const { email } = req.user;
+    const { username } = req.user;
     try {
         const { error, value } = validator_1.acceptCodeSchema.validate({ providedCode });
         if (error) {
@@ -194,7 +193,7 @@ const verifyCode = async (req, res) => {
             return;
         }
         const codeValue = providedCode.toString();
-        const existingUser = await (0, usersModel_1.getUserByEmail)(email).select('+verificationCode +verificationCodeValidation');
+        const existingUser = await (0, usersModel_1.getUserByUsername)(username).select('+verificationCode +verificationCodeValidation');
         if (!existingUser) {
             res.status(404).json({ success: false, message: 'User does not exists!' });
             return;

@@ -3,7 +3,7 @@ import { Document, Types } from "mongoose"
 export interface IUser extends Document {
   firstName: string
   lastName: string
-  email: string
+  username: string
   password: string
   verified: boolean
   verificationCode?: string

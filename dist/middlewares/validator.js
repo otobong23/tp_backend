@@ -8,15 +8,17 @@ const joi_1 = __importDefault(require("joi"));
 exports.signupSchema = joi_1.default.object({
     firstName: joi_1.default.string().min(2).max(20).required(),
     lastName: joi_1.default.string().min(2).max(20).required(),
-    email: joi_1.default.string().min(6).max(60).required().email({
-        tlds: { allow: ['com', 'net'] }
-    }),
+    username: joi_1.default.string().min(6).max(60).required(),
+    // email: Joi.string().min(6).max(60).required().email({
+    //   tlds: { allow:[ 'com', 'net' ] }
+    // }),
     password: joi_1.default.string().required().pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$'))
 });
 exports.signinSchema = joi_1.default.object({
-    email: joi_1.default.string().min(6).max(60).required().email({
-        tlds: { allow: ['com', 'net'] }
-    }),
+    // email: Joi.string().min(6).max(60).required().email({
+    //   tlds: { allow:[ 'com', 'net' ] }
+    // }),
+    username: joi_1.default.string().min(6).max(6).required(),
     password: joi_1.default.string().required().pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$'))
 });
 exports.acceptCodeSchema = joi_1.default.object({

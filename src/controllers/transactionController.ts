@@ -4,7 +4,7 @@ import { TronWeb } from "tronweb";
 import { Request, Response } from "express"
 import TransactionModel from "../models/transactionModel"
 import getCryptoToUsdtRate from "../helpers/getCryptoToUsdtRate";
-import { getUserByEmail } from "../models/usersModel";
+import { getUserByUsername } from "../models/usersModel";
 
 const INFURA_PROJECT_URL = `https://mainnet.infura.io/v3/${process.env.INFURA_API_KEY}`!
 const BITCOIN_API_URL = "https://blockstream.info/api"!
@@ -24,9 +24,9 @@ const tronWeb = new TronWeb({
 
 // Endpoint for listening to Ethereum transactions
 export const ethListen = async (req: Request, res: Response) => {
-    const { email } = req.user
+    const { username } = req.user
     try {
-        const existingUser: any = await getUserByEmail(email)
+        const existingUser: any = await getUserByUsername(username)
         if (!existingUser) {
             res.status(404).json({ success: false, message: 'User does not exists!' })
             return
@@ -80,9 +80,9 @@ export const ethListen = async (req: Request, res: Response) => {
 
 // Endpoint for listening to Bitcoin transactions
 export const btcListen = async (req: Request, res: Response) => {
-    const { email } = req.user
+    const { username } = req.user
     try {
-        const existingUser: any = await getUserByEmail(email)
+        const existingUser: any = await getUserByUsername(username)
         if (!existingUser) {
             res.status(404).json({ success: false, message: 'User does not exists!' })
             return
@@ -139,9 +139,9 @@ export const btcListen = async (req: Request, res: Response) => {
 
 // Endpoint for listening to TRC20 transactions
 export const usdtListen = async (req: Request, res: Response) => {
-    const { email } = req.user
+    const { username } = req.user
     try {
-        const existingUser: any = await getUserByEmail(email)
+        const existingUser: any = await getUserByUsername(username)
         if (!existingUser) {
             res.status(404).json({ success: false, message: 'User does not exists!' })
             return
@@ -192,10 +192,10 @@ export const withdraw = async (req: Request, res: Response) => {
 }
 
 export const getTransactionHistory = async (req: Request, res: Response) => {
-    const { email } = req.user
+    const { username } = req.user
     const { params, query } = req
     try {
-        const existingUser: any = await getUserByEmail(email)
+        const existingUser: any = await getUserByUsername(username)
         if (!existingUser) {
             res.status(404).json({ success: false, message: 'User does not exists!' })
             return

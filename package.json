@@ -8,7 +8,8 @@
   },
   "scripts": {
     "start": "node dist/index",
-    "dev": "tsc --build"
+    "dev": "tsc --build",
+    "watch": "tsc --watch"
   },
   "author": "Miracle Boniface",
   "license": "ISC",

@@ -8,9 +8,9 @@ const usersModel_1 = require("../models/usersModel");
 const validator_1 = require("../middlewares/validator");
 const getCryptoToUsdtRate_1 = __importDefault(require("../helpers/getCryptoToUsdtRate"));
 const getWallet = async (req, res) => {
-    const { email } = req.user;
+    const { username } = req.user;
     try {
-        const existingUser = await (0, usersModel_1.getUserByEmail)(email);
+        const existingUser = await (0, usersModel_1.getUserByUsername)(username);
         if (!existingUser) {
             res.status(404).json({ success: false, message: 'User does not exists!' });
             return;
@@ -25,14 +25,14 @@ const getWallet = async (req, res) => {
 exports.getWallet = getWallet;
 const addToWatchlist = async (req, res) => {
     const { watchlist } = req.body;
-    const { email } = req.user;
+    const { username } = req.user;
     try {
         const { error, value } = validator_1.watchlistSchema.validate({ watchlist });
         if (error) {
             res.status(406).json({ success: false, message: "From Validator: " + error.details[0].message });
             return;
         }
-        const existingUser = await (0, usersModel_1.getUserByEmail)(email);
+        const existingUser = await (0, usersModel_1.getUserByUsername)(username);
         if (!existingUser) {
             res.status(404).json({ success: false, message: 'User does not exists!' });
             return;
@@ -55,15 +55,15 @@ const addToWatchlist = async (req, res) => {
 };
 exports.addToWatchlist = addToWatchlist;
 const getUser = async (req, res) => {
-    const { email } = req.user;
+    const { username } = req.user;
     try {
-        const existingUser = await (0, usersModel_1.getUserByEmail)(email);
+        const existingUser = await (0, usersModel_1.getUserByUsername)(username);
         if (!existingUser) {
             res.status(404).json({ success: false, message: 'User does not exists!' });
             return;
         }
         const { firstName, lastName, wallet, createdAt, updatedAt } = existingUser;
-        res.status(200).send({ success: true, user: { firstName, lastName, email, wallet, createdAt, updatedAt } });
+        res.status(200).send({ success: true, user: { firstName, lastName, username, wallet, createdAt, updatedAt } });
         return;
     }
     catch (e) {
