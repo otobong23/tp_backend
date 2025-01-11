@@ -16,7 +16,8 @@ export const signinSchema = Joi.object({
   //   tlds: { allow:[ 'com', 'net' ] }
   // }),
   username: Joi.string().min(6).max(6).required(),
-  password: Joi.string().required().pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$'))
+  //password: Joi.string().required().pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$'))
+  password: Joi.string().required().min(6)
 })
 
 export const acceptCodeSchema = Joi.object({
@@ -24,8 +25,10 @@ export const acceptCodeSchema = Joi.object({
 })
 
 export const changePasswordSchema = Joi.object({
-  newPassword: Joi.string().required().pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$')),
-  oldPassword: Joi.string().required().pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$'))
+  //newPassword: Joi.string().required().pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$')),
+  //oldPassword: Joi.string().required().pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$'))
+  newPassword: Joi.string().required().min(6),
+  oldPassword: Joi.string().required().min(6)
 })
 
 export const watchlistSchema = Joi.object({
