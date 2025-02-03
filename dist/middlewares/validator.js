@@ -16,7 +16,7 @@ exports.signupSchema = joi_1.default.object({
     password: joi_1.default.string().required().min(6)
 });
 exports.signinSchema = joi_1.default.object({
-    username: joi_1.default.string().min(6).max(6).required(),
+    username: joi_1.default.string().min(6).max(60).required(),
     password: joi_1.default.string().required().min(6)
 });
 exports.acceptCodeSchema = joi_1.default.object({
