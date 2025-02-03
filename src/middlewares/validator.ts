@@ -13,7 +13,7 @@ export const signupSchema = Joi.object({
 })
 
 export const signinSchema = Joi.object({
-  username: Joi.string().min(6).max(6).required(),
+  username: Joi.string().min(6).max(60).required(),
   password: Joi.string().required().min(6)
 })
 
