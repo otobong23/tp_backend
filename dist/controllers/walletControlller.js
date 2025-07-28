@@ -62,7 +62,6 @@ const getUser = async (req, res) => {
             res.status(404).json({ success: false, message: 'User does not exists!' });
             return;
         }
-        const { firstName, lastName, wallet, createdAt, updatedAt } = existingUser;
         res.status(200).send({ success: true, user: existingUser });
         return;
     }

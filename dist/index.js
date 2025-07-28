@@ -18,11 +18,11 @@ const MONGO_URI = process.env.MONGO_URI || '';
 console.log(MONGO_URI);
 app.use((0, cors_1.default)({
     credentials: true,
-    origin: ['http://localhost:8080', 'https://tradephere.onrender.com']
+    origin: ['http://localhost:8080', 'https://tradephere.onrender.com', 'https://www.tradephere.com', 'https://tradephere.com']
 }));
 app.options('*', (0, cors_1.default)({
     credentials: true,
-    origin: ['http://localhost:8080', 'https://tradephere.onrender.com']
+    origin: ['http://localhost:8080', 'https://tradephere.onrender.com', 'https://www.tradephere.com', 'https://tradephere.com']
 }));
 app.use((0, cookie_parser_1.default)());
 app.use(body_parser_1.default.json());

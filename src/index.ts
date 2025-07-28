@@ -16,11 +16,11 @@ console.log(MONGO_URI)
 
 app.use(cors({
   credentials: true,
-  origin: ['http://localhost:8080', 'https://tradephere.onrender.com']
+  origin: ['http://localhost:8080', 'https://tradephere.onrender.com','https://www.tradephere.com','https://tradephere.com']
 }))
 app.options('*', cors({
   credentials: true,
-  origin: ['http://localhost:8080', 'https://tradephere.onrender.com']
+  origin: ['http://localhost:8080', 'https://tradephere.onrender.com','https://www.tradephere.com','https://tradephere.com']
 }))
 app.use(cookieParser())
 app.use(bodyParser.json())
