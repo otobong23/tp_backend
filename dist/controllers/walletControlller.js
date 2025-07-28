@@ -63,7 +63,7 @@ const getUser = async (req, res) => {
             return;
         }
         const { firstName, lastName, wallet, createdAt, updatedAt } = existingUser;
-        res.status(200).send({ success: true, user: { firstName, lastName, username, wallet, createdAt, updatedAt } });
+        res.status(200).send({ success: true, user: existingUser });
         return;
     }
     catch (e) {

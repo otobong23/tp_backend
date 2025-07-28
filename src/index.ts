@@ -11,14 +11,16 @@ dotenv.config()
 const app = express()
 const PORT = process.env.PORT || 4000
 const MONGO_URI: string = process.env.MONGO_URI || ''
+console.log(MONGO_URI)
+
 
 app.use(cors({
   credentials: true,
-  origin: ['http://localhost:3000', 'https://tradephere.onrender.com']
+  origin: ['http://localhost:8080', 'https://tradephere.onrender.com']
 }))
 app.options('*', cors({
   credentials: true,
-  origin: ['http://localhost:3000', 'https://tradephere.onrender.com']
+  origin: ['http://localhost:8080', 'https://tradephere.onrender.com']
 }))
 app.use(cookieParser())
 app.use(bodyParser.json())

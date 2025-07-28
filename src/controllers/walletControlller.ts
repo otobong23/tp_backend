@@ -59,7 +59,7 @@ export const getUser = async (req:Request, res:Response) => {
       return
     }
     const { firstName, lastName, wallet, createdAt, updatedAt } = existingUser
-    res.status(200).send({ success: true, user: { firstName, lastName, username, wallet, createdAt, updatedAt } })
+    res.status(200).send({ success: true, user: existingUser })
     return
   } catch (e:any) {
     console.log(e)

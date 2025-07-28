@@ -70,7 +70,7 @@ const signup = async (req, res) => {
             }, process.env.TOKEN_SECRET || '', {
                 expiresIn: '3d'
             });
-            const Days = (3 * (24 * 3600000)); // 3 Days
+            const Days = (7 * (24 * 3600000)); // 3 Days
             res.status(201).cookie('Authorization', 'Bearer ' + token, { expires: new Date(Date.now() + Days), httpOnly: process.env.NODE_ENV === 'production', secure: process.env.NODE_ENV === 'production' }).send({
                 success: true,
                 token,
@@ -117,7 +117,7 @@ const signin = async (req, res) => {
         }, process.env.TOKEN_SECRET || '', {
             expiresIn: '3d'
         });
-        const Days = (3 * (24 * 3600000)); // 3 Days
+        const Days = (7 * (24 * 3600000)); // 3 Days
         res.status(202).cookie('Authorization', 'Bearer ' + token, { expires: new Date(Date.now() + Days), httpOnly: process.env.NODE_ENV === 'production', secure: process.env.NODE_ENV === 'production' }).send({
             success: true,
             token,
