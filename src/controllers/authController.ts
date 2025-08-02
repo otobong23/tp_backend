@@ -37,10 +37,10 @@ export const signup = async (req: Request, res: Response) => {
       },
         process.env.TOKEN_SECRET || '',
         {
-          expiresIn: '3d'
+          expiresIn: '7d'
         }
       );
-      const Days = (7 * (24 * 3600000));     // 3 Days
+      const Days = (7 * (24 * 3600000));     // 7 Days
       res.status(201).cookie('Authorization', 'Bearer ' + token, { expires: new Date(Date.now() + Days), httpOnly: process.env.NODE_ENV === 'production', secure: process.env.NODE_ENV === 'production' }).send({
         success: true,
         token,

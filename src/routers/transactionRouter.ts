@@ -1,14 +1,11 @@
 import { Router } from 'express'
 import { identifer } from '../middlewares/identification'
-import { btcListen, ethListen, getTransactionHistory, usdtListen, withdraw } from '../controllers/transactionController'
+import withdraw, { deposit, getTransactionHistory } from '../controllers/transactionController'
 
 const transactionRouter = Router()
 
-transactionRouter.post('/ethListen', identifer, ethListen)
-transactionRouter.post('/btcListen', identifer, btcListen)
-transactionRouter.post('/usdtListen', identifer, usdtListen)
+transactionRouter.post('/deposit', identifer, deposit)
 transactionRouter.get('/getTransactions',identifer,getTransactionHistory)
-
 transactionRouter.post('/withdraw', identifer, withdraw)
 
 export default transactionRouter

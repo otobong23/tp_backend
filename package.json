@@ -8,6 +8,7 @@
   },
   "scripts": {
     "start": "node dist/index",
+    "dev:watch": "node --watch dist/index",
     "dev": "tsc --build",
     "watch": "tsc --watch"
   },

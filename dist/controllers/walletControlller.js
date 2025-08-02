@@ -15,11 +15,13 @@ const getWallet = async (req, res) => {
             res.status(404).json({ success: false, message: 'User does not exists!' });
             return;
         }
-        res.status(200).send({ success: true, wallet: existingUser.wallet });
+        res.status(200).json({ success: true, message: "wallet gotten successfully", data: existingUser.wallet });
     }
     catch (e) {
-        console.log(e);
-        res.status(500).send(e.message);
+        console.error('[WalletController Error]', e);
+        const errorMessage = e instanceof Error ? e.message : 'An unexpected error occurred';
+        res.status(500).json({ success: false, message: errorMessage });
+        return;
     }
 };
 exports.getWallet = getWallet;
@@ -40,7 +42,7 @@ const addToWatchlist = async (req, res) => {
         const itemsToAdd = Array.isArray(watchlist) ? watchlist : [watchlist];
         existingUser.wallet?.watchList.push(...itemsToAdd);
         await existingUser.save().then(() => {
-            res.status(200).send({ success: true, watchlist: existingUser.wallet?.watchList });
+            res.status(200).json({ success: true, message: "data added to watchlist successfully", data: existingUser.wallet?.watchList });
             return;
         }).catch((e) => {
             res.status(500).send({ success: false, message: `failed to save user's watchlist data, Error: ${e.message}` });
@@ -48,8 +50,9 @@ const addToWatchlist = async (req, res) => {
         });
     }
     catch (e) {
-        console.log(e);
-        res.status(500).send(e.message);
+        console.error('[WalletController Error]', e);
+        const errorMessage = e instanceof Error ? e.message : 'An unexpected error occurred';
+        res.status(500).json({ success: false, message: errorMessage });
         return;
     }
 };
@@ -62,12 +65,13 @@ const getUser = async (req, res) => {
             res.status(404).json({ success: false, message: 'User does not exists!' });
             return;
         }
-        res.status(200).send({ success: true, user: existingUser });
+        res.status(200).json({ success: true, message: "User Fetched Successfully", user: existingUser });
         return;
     }
     catch (e) {
-        console.log(e);
-        res.status(500).send(e.message);
+        console.error('[WalletController Error]', e);
+        const errorMessage = e instanceof Error ? e.message : 'An unexpected error occurred';
+        res.status(500).json({ success: false, message: errorMessage });
         return;
     }
 };
@@ -81,11 +85,12 @@ const getUsdtRate = async (req, res) => {
             return;
         }
         const cryptoToUsdtRate = await (0, getCryptoToUsdtRate_1.default)(cryptoLabel);
-        res.status(200).send({ success: true, value: cryptoToUsdtRate });
+        res.status(200).send({ success: true, message: `${cryptoLabel} fetched successfully`, value: cryptoToUsdtRate });
     }
     catch (e) {
-        console.log(e);
-        res.status(500).send(e.message);
+        console.error('[WalletController Error]', e);
+        const errorMessage = e instanceof Error ? e.message : 'An unexpected error occurred';
+        res.status(500).json({ success: false, message: errorMessage });
         return;
     }
 };

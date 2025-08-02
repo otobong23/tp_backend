@@ -4,9 +4,12 @@ import { ITransaction } from 'types/models.types';
 // Define the transaction schema
 const TransactionSchema: Schema<ITransaction> = new Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index: true },
+    username: { type: String, required: true },
     amount: { type: Number, required: true },
     blockchain: { type: String, required: true, default: 'USD' },
-    type: { type: String, enum: ['credit', 'debit'], required: true },
+    image: { type: String },
+    walletAddress: { type: String },
+    type: { type: String, enum: ['deposit', 'withdrawal'], required: true },
     status: { type: String, enum: ['pending', 'completed', 'failed'], required: true, default: 'pending' },
     description: { type: String, trim: true },
     metadata: { type: Object },

@@ -22,12 +22,25 @@ export interface IUser extends Document {
 // Define the transaction interface for TypeScript
 export interface ITransaction extends Document {
     userId: Types.ObjectId;
+    username: string,
     amount: number;
     blockchain: string;                 // Currency (e.g., USD, ETH)
-    type: 'credit' | 'debit';
+    image?: string;
+    walletAddress?: string;
+    type: 'deposit' | 'withdrawal';
     status: 'pending' | 'completed' | 'failed';
     description?: string;
     metadata?: object;                // Optional additional data
     createdAt: Date;                  // Transaction date
     updatedAt: Date;                  // Timestamp for last update
+}
+
+export interface IAdmin extends Document {
+  username: string
+  password: string
+  walletAddress: {
+    BTC: string
+    ETH: string
+    USDT: string
+  }
 }
