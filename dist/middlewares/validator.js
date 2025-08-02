@@ -38,7 +38,7 @@ exports.depositDTO = joi_1.default.object({
     image: joi_1.default.string().optional()
 });
 exports.withdrawalDTO = joi_1.default.object({
-    walletAddress: joi_1.default.string().optional(),
+    walletAddress: joi_1.default.optional(),
     amount: joi_1.default.number().positive().required(),
     blockchain: joi_1.default.alternatives().try(joi_1.default.string().valid('USDT'), joi_1.default.string().valid('BTC'), joi_1.default.string().valid('ETH')).required(),
 });

@@ -53,7 +53,7 @@ export const depositDTO = Joi.object({
 })
 
 export const withdrawalDTO = Joi.object({
-  walletAddress: Joi.string().optional(),
+  walletAddress: Joi.optional(),
   amount: Joi.number().positive().required(),
   blockchain: Joi.alternatives().try(
     Joi.string().valid('USDT'),
