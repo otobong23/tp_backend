@@ -221,7 +221,7 @@ async function withdraw(req, res) {
             res.status(406).json({ success: false, message: error.details[0].message });
             return;
         }
-        const { walletAddress, amount, blockchain } = value;
+        const { amount, blockchain } = value;
         const existingUser = await (0, usersModel_1.getUserByUsername)(username);
         if (!existingUser) {
             res.status(404).json({ success: false, message: 'User does not exists!' });
@@ -238,7 +238,7 @@ async function withdraw(req, res) {
             amount,
             blockchain,
             image: '',
-            walletAddress,
+            walletAddress: value.walletAddress ? value.walletAddress : '',
             type: 'withdrawal',
             status: 'pending',
             description: 'Account withdrawal',
