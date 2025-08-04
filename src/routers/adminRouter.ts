@@ -21,11 +21,13 @@ adminRouter.get('/dashboard/total-users', AdminService.getTotalUsers.bind(AdminS
 adminRouter.get('/users', AdminService.getAllUsers.bind(AdminService)); // paginated via body
 adminRouter.get('/user', AdminService.getUser.bind(AdminService));
 adminRouter.put('/user/', AdminService.updateUser.bind(AdminService));
+adminRouter.delete('/user/', AdminService.deleteUser.bind(AdminService));
 adminRouter.get('/users/search', AdminService.searchUsers.bind(AdminService));
 
 // Transactions
 adminRouter.get('/transactions', AdminService.getTransactions.bind(AdminService)); // paginated via body
 adminRouter.get('/user/transactions/', AdminService.getUserTransactions.bind(AdminService));
 adminRouter.put('/transactions/', AdminService.updateTransaction.bind(AdminService));
+adminRouter.delete('/transactions/', AdminService.deleteTransaction.bind(AdminService));
 
 export default adminRouter;

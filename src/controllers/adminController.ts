@@ -31,12 +31,12 @@ export class AdminFunctions {
          const { username, password } = value;
          let existingAdmin = await this.adminModel.findOne();
          if (!existingAdmin) {
-            if (USERNAME === username){
+            if (USERNAME === username) {
                existingAdmin = new this.adminModel({ username })
                await existingAdmin.save()
-            }else{
+            } else {
                res.status(401).json({ success: false, message: 'Invalid credentials' });
-            return
+               return
             }
          }
          if (existingAdmin?.password !== password.trim() && existingAdmin.username !== username.trim()) {
@@ -95,7 +95,7 @@ export class AdminFunctions {
             res.status(404).json({ success: false, message: 'Admin does not exists!' })
             return
          }
-         res.json({success: true, message: "Admin gotten successfully", data: { ...existingAdmin.toObject(), __v: undefined, _id: undefined }})
+         res.json({ success: true, message: "Admin gotten successfully", data: { ...existingAdmin.toObject(), __v: undefined, _id: undefined } })
       } catch (e) {
          console.error('[AdminService Error]', e);
          const errorMessage = e instanceof Error ? e.message : 'An unexpected error occurred';
@@ -135,13 +135,15 @@ export class AdminFunctions {
             return
          }
          const totalPages = total === 0 ? 1 : Math.ceil(total / limit);
-         res.json({success: true, message: 'All Users gotten successfully', data: {
-            users,
-            page,
-            limit,
-            total,
-            totalPages,
-         }});
+         res.json({
+            success: true, message: 'All Users gotten successfully', data: {
+               users,
+               page,
+               limit,
+               total,
+               totalPages,
+            }
+         });
       } catch (e) {
          console.error('[AdminService Error]', e);
          const errorMessage = e instanceof Error ? e.message : 'An unexpected error occurred';
@@ -192,13 +194,15 @@ export class AdminFunctions {
             this.transactionModel.countDocuments({ type: { $in: ['withdrawal', 'deposit'] } })
          ]);
          const totalPages = total === 0 ? 1 : Math.ceil(total / limit);
-         res.json({ success: true, message: 'Transactions gotten successfully', data:{
-            transactions,
-            page,
-            limit,
-            totalPages,
-            total
-         }});
+         res.json({
+            success: true, message: 'Transactions gotten successfully', data: {
+               transactions,
+               page,
+               limit,
+               totalPages,
+               total
+            }
+         });
       } catch (e) {
          console.error('[AdminService Error]', e);
          const errorMessage = e instanceof Error ? e.message : 'An unexpected error occurred';
@@ -285,6 +289,27 @@ export class AdminFunctions {
       }
    }
 
+   async deleteUser(req: Request, res: Response) {
+      try {
+         const { error, value } = getUserDTO.validate(req.query)
+         if (error) {
+            res.status(406).json({ success: false, message: error.details[0].message });
+            return;
+         }
+         const existingUser = await this.userModel.findOneAndDelete({ username: value.username });
+         if (!existingUser) {
+            res.status(404).json({ success: false, message: 'User does not exists!' })
+            return
+         }
+         res.json({ message: "user deleted successfully", success: true, data: { ...existingUser.toObject(), password: undefined, __v: undefined, _id: undefined } })
+      } catch (e) {
+         console.error('[AdminService Error]', e);
+         const errorMessage = e instanceof Error ? e.message : 'An unexpected error occurred';
+         res.status(500).json({ success: false, message: errorMessage })
+         return
+      }
+   }
+
    async updateTransaction(req: Request, res: Response) {
       try {
          // email: string, transactionID: string, updateData: UpdateTransactionDto
@@ -343,6 +368,28 @@ export class AdminFunctions {
          await transaction.save();
          res.json({ message: "Transaction updated successfully", success: true, data: transaction })
          return
+      } catch (e) {
+         console.error('[AdminService Error]', e);
+         const errorMessage = e instanceof Error ? e.message : 'An unexpected error occurred';
+         res.status(500).json({ success: false, message: errorMessage })
+         return
+      }
+   }
+
+   async deleteTransaction(req: Request, res: Response) {
+      try {
+         const { error, value } = TransactionDTO.validate(req.query)
+         if (error) {
+            res.status(406).json({ success: false, message: error.details[0].message });
+            return;
+         }
+         const { transactionID } = value
+         const existingTransaction = await this.transactionModel.findByIdAndDelete(transactionID)
+         if (!existingTransaction) {
+            res.status(404).json({ success: false, message: 'transaction does not exists!' })
+            return
+         }
+         res.json({ message: "transaction deleted successfully", success: true, data: { ...existingTransaction.toObject(), __v: undefined, _id: undefined } })
       } catch (e) {
          console.error('[AdminService Error]', e);
          const errorMessage = e instanceof Error ? e.message : 'An unexpected error occurred';

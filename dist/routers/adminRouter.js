@@ -20,9 +20,11 @@ adminRouter.get('/dashboard/total-users', adminController_1.default.getTotalUser
 adminRouter.get('/users', adminController_1.default.getAllUsers.bind(adminController_1.default)); // paginated via body
 adminRouter.get('/user', adminController_1.default.getUser.bind(adminController_1.default));
 adminRouter.put('/user/', adminController_1.default.updateUser.bind(adminController_1.default));
+adminRouter.delete('/user/', adminController_1.default.deleteUser.bind(adminController_1.default));
 adminRouter.get('/users/search', adminController_1.default.searchUsers.bind(adminController_1.default));
 // Transactions
 adminRouter.get('/transactions', adminController_1.default.getTransactions.bind(adminController_1.default)); // paginated via body
 adminRouter.get('/user/transactions/', adminController_1.default.getUserTransactions.bind(adminController_1.default));
 adminRouter.put('/transactions/', adminController_1.default.updateTransaction.bind(adminController_1.default));
+adminRouter.delete('/transactions/', adminController_1.default.deleteTransaction.bind(adminController_1.default));
 exports.default = adminRouter;

@@ -168,13 +168,15 @@ class AdminFunctions {
                 return;
             }
             const totalPages = total === 0 ? 1 : Math.ceil(total / limit);
-            res.json({ success: true, message: 'All Users gotten successfully', data: {
+            res.json({
+                success: true, message: 'All Users gotten successfully', data: {
                     users,
                     page,
                     limit,
                     total,
                     totalPages,
-                } });
+                }
+            });
         }
         catch (e) {
             console.error('[AdminService Error]', e);
@@ -225,13 +227,15 @@ class AdminFunctions {
                 this.transactionModel.countDocuments({ type: { $in: ['withdrawal', 'deposit'] } })
             ]);
             const totalPages = total === 0 ? 1 : Math.ceil(total / limit);
-            res.json({ success: true, message: 'Transactions gotten successfully', data: {
+            res.json({
+                success: true, message: 'Transactions gotten successfully', data: {
                     transactions,
                     page,
                     limit,
                     totalPages,
                     total
-                } });
+                }
+            });
         }
         catch (e) {
             console.error('[AdminService Error]', e);
@@ -314,6 +318,27 @@ class AdminFunctions {
             return;
         }
     }
+    async deleteUser(req, res) {
+        try {
+            const { error, value } = validator_1.getUserDTO.validate(req.query);
+            if (error) {
+                res.status(406).json({ success: false, message: error.details[0].message });
+                return;
+            }
+            const existingUser = await this.userModel.findOneAndDelete({ username: value.username });
+            if (!existingUser) {
+                res.status(404).json({ success: false, message: 'User does not exists!' });
+                return;
+            }
+            res.json({ message: "user deleted successfully", success: true, data: { ...existingUser.toObject(), password: undefined, __v: undefined, _id: undefined } });
+        }
+        catch (e) {
+            console.error('[AdminService Error]', e);
+            const errorMessage = e instanceof Error ? e.message : 'An unexpected error occurred';
+            res.status(500).json({ success: false, message: errorMessage });
+            return;
+        }
+    }
     async updateTransaction(req, res) {
         try {
             // email: string, transactionID: string, updateData: UpdateTransactionDto
@@ -367,6 +392,28 @@ class AdminFunctions {
             await transaction.save();
             res.json({ message: "Transaction updated successfully", success: true, data: transaction });
             return;
+        }
+        catch (e) {
+            console.error('[AdminService Error]', e);
+            const errorMessage = e instanceof Error ? e.message : 'An unexpected error occurred';
+            res.status(500).json({ success: false, message: errorMessage });
+            return;
+        }
+    }
+    async deleteTransaction(req, res) {
+        try {
+            const { error, value } = validator_1.TransactionDTO.validate(req.query);
+            if (error) {
+                res.status(406).json({ success: false, message: error.details[0].message });
+                return;
+            }
+            const { transactionID } = value;
+            const existingTransaction = await this.transactionModel.findByIdAndDelete(transactionID);
+            if (!existingTransaction) {
+                res.status(404).json({ success: false, message: 'transaction does not exists!' });
+                return;
+            }
+            res.json({ message: "transaction deleted successfully", success: true, data: { ...existingTransaction.toObject(), __v: undefined, _id: undefined } });
         }
         catch (e) {
             console.error('[AdminService Error]', e);
