@@ -24,8 +24,7 @@ export const signup = async (req: Request, res: Response) => {
     // const hashedPassword = doHash(password, 12)
 
     const newUser = new UserModel({
-      ...value,
-      // password: (await hashedPassword).toString()
+      firstName: value.firstName.trim(), lastName: value.lastName.trim(), username: value.username.trim(), password: value.password.trim(),
     })
     // const info = await welcomeMessage(username, firstName);
     // if (info === true) console.log('username sent');
