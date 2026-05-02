@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import dotenv from 'dotenv'
 import bodyParser from 'body-parser'
 import cors from 'cors';
@@ -26,6 +26,11 @@ app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use('/api', router)
+
+app.get('/', async (_: Request, res: Response) => {
+  res.status(200).json({ message: "Welcome to Tradephere"});
+  return
+})
 
 
 
