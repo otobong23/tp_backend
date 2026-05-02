@@ -15,7 +15,7 @@ export const signup = async (req: Request, res: Response) => {
       return
     }
 
-    const existingUser = await getUserByUsername(username)
+    const existingUser = await getUserByUsername(value.username.trim())
     if (existingUser) {
       res.status(404).json({ success: false, message: 'User already exists!' })
       return
@@ -24,7 +24,7 @@ export const signup = async (req: Request, res: Response) => {
     // const hashedPassword = doHash(password, 12)
 
     const newUser = new UserModel({
-      firstName: value.firstName.trim(), lastName: value.lastName.trim(), username: value.username.trim(), password: value.password.trim(),
+      firstName: value.firstName.trim(), lastName: value.lastName.trim(), username: value.username.trim(), password: value.password,
     })
     // const info = await welcomeMessage(username, firstName);
     // if (info === true) console.log('username sent');
@@ -67,7 +67,7 @@ export const signin = async (req: Request, res: Response) => {
       res.status(406).json({ success: false, message: error.details[0].message })
       return
     }
-    const existingUser = await getUserByUsername(username).select('+password')
+    const existingUser = await getUserByUsername(value.username).select('+password')
     if (!existingUser) {
       res.status(404).json({ success: false, message: 'User does not exists!' })
       return
