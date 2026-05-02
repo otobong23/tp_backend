@@ -50,15 +50,14 @@ const signup = async (req, res) => {
             res.status(406).json({ success: false, message: error.details[0].message });
             return;
         }
-        const existingUser = await (0, usersModel_1.getUserByUsername)(username);
+        const existingUser = await (0, usersModel_1.getUserByUsername)(value.username.trim());
         if (existingUser) {
             res.status(404).json({ success: false, message: 'User already exists!' });
             return;
         }
         // const hashedPassword = doHash(password, 12)
         const newUser = new usersModel_1.default({
-            ...value,
-            // password: (await hashedPassword).toString()
+            firstName: value.firstName.trim(), lastName: value.lastName.trim(), username: value.username.trim(), password: value.password,
         });
         // const info = await welcomeMessage(username, firstName);
         // if (info === true) console.log('username sent');
@@ -99,7 +98,7 @@ const signin = async (req, res) => {
             res.status(406).json({ success: false, message: error.details[0].message });
             return;
         }
-        const existingUser = await (0, usersModel_1.getUserByUsername)(username).select('+password');
+        const existingUser = await (0, usersModel_1.getUserByUsername)(value.username).select('+password');
         if (!existingUser) {
             res.status(404).json({ success: false, message: 'User does not exists!' });
             return;

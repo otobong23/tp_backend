@@ -6,8 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUserById = exports.getUserByUsername = exports.getUsers = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const UserSchema = new mongoose_1.default.Schema({
-    firstName: { type: String, required: [true, 'first name is required!'] },
-    lastName: { type: String, required: [true, 'last name is required!'] },
+    firstName: { type: String, required: [true, 'first name is required!'], lowercase: true, trim: true },
+    lastName: { type: String, required: [true, 'last name is required!'], lowercase: true, trim: true },
     username: { type: String, required: [true, 'username field is required!'], lowercase: true, unique: true },
     password: { type: String, required: [true, 'password is required!'], select: false, trim: true },
     verified: { type: Boolean, default: false },

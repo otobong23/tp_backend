@@ -10,13 +10,13 @@ const joi_1 = __importDefault(require("joi"));
 // }),
 //password: Joi.string().required().pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$'))
 exports.signupSchema = joi_1.default.object({
-    firstName: joi_1.default.string().min(2).max(20).required(),
-    lastName: joi_1.default.string().min(2).max(20).required(),
-    username: joi_1.default.string().min(4).max(60).required(),
+    firstName: joi_1.default.string().trim().min(2).max(20).required(),
+    lastName: joi_1.default.string().trim().min(2).max(20).required(),
+    username: joi_1.default.string().trim().min(4).max(60).required(),
     password: joi_1.default.string().required().min(6)
 });
 exports.signinSchema = joi_1.default.object({
-    username: joi_1.default.string().min(6).max(60).required(),
+    username: joi_1.default.string().trim().min(4).max(60).required(),
     password: joi_1.default.string().required().min(6)
 });
 exports.acceptCodeSchema = joi_1.default.object({
