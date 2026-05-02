@@ -6,14 +6,14 @@ import Joi from 'joi'
 //password: Joi.string().required().pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$'))
 
 export const signupSchema = Joi.object({
-  firstName: Joi.string().min(2).max(20).required(),
-  lastName: Joi.string().min(2).max(20).required(),
-  username: Joi.string().min(4).max(60).required(),
+  firstName: Joi.string().trim().min(2).max(20).required(),
+  lastName: Joi.string().trim().min(2).max(20).required(),
+  username: Joi.string().trim().min(4).max(60).required(),
   password: Joi.string().required().min(6)
 })
 
 export const signinSchema = Joi.object({
-  username: Joi.string().min(6).max(60).required(),
+  username: Joi.string().trim().min(4).max(60).required(),
   password: Joi.string().required().min(6)
 })
 
